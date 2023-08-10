@@ -1,1 +1,0 @@
-import{_ as s,f as o,o as a,c,u as r,w as t}from"./app-9cad6f30.js";const _=["src"],n={__name:"ImgUrl",setup(l){const e=o("/images/favicon.ico");return(m,f)=>(a(),c("img",{src:r(t)(e.value)},null,8,_))}},u=s(n,[["__file","ImgUrl.vue"]]);export{u as default};
