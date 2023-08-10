@@ -4,6 +4,7 @@ title: 页面的标题  会覆盖掉 #等级的内容
 description: 页面的描述
 ---
 
+<!--
 # index 1
 
 ## index 2
@@ -102,7 +103,7 @@ index 优先级高
 
     导入代码块
     <!-- 最简单的语法 -->
-    
+
     ```js
         @[code](../foo.js)
         @[code{3-10} js{3}:no-line-numbers](../foo.js)
@@ -119,9 +120,11 @@ index 优先级高
     你可以在你的 Markdown 内容中使用相对路径来引用静态资源：
 
     <!-- ![图片](./image.png) -->
+
     或
 
     <!-- ![图片](image.png) -->
+
     一般情况下，我们推荐你使用这种方式来引用图片，因为人们通常会把图片放在引用它的 Markdown 文件附近
 
 3.  Public
@@ -135,22 +138,22 @@ index 优先级高
     尽管这不是常见用法，但是你可以从依赖包中引用图片：
 
     ```js
-    npm install -D package-name
-    //由于 Markdown 会默认将图片链接视为相对链接，你需要使用 <img> 标签:
+        npm install -D package-name
+        //由于 Markdown 会默认将图片链接视为相对链接，你需要使用 <img> 标签:
 
-    <img src="package-name/image.png" alt="来自依赖包的图片">
-    //在配置文件中设置的路径别名也同样支持：
+        <img src="package-name/image.png" alt="来自依赖包的图片">
+        //在配置文件中设置的路径别名也同样支持：
 
-    import { getDirname, path } from '@vuepress/utils'
+        import { getDirname, path } from '@vuepress/utils'
 
-    const \_\_dirname = getDirname(import.meta.url)
+        const \_\_dirname = getDirname(import.meta.url)
 
-    export default {
-        alias: {
-            '@alias': path.resolve(\_\_dirname, './path/to/some/dir'),
-        },
-    }
-    <img src="@alias/image.png" alt="来自路径别名的图片">
+        export default {
+            alias: {
+                '@alias': path.resolve(\_\_dirname, './path/to/some/dir'),
+            },
+        }
+        <img src="@alias/image.png" alt="来自路径别名的图片">
     ```
 
 5.  站点多语言配置,主题多语言配置
@@ -253,3 +256,5 @@ index 优先级高
             ],
         }
     ```
+
+    -->

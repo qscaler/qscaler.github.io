@@ -1,10 +1,10 @@
-<!-- <template>
+<template>
     <img :src="withBase(logoPath)" />
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { withBase } from "@vuepress/client";
+import { ref } from "vue"
+import { withBase } from "@vuepress/client"
 
-const logoPath = ref("/images/hero.png");
-</script> -->
+const logoPath = ref("/images/favicon.ico")
+</script>
