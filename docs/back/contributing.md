@@ -1,0 +1,255 @@
+---
+lang: zh-CN
+title: 页面的标题  会覆盖掉 #等级的内容
+description: 页面的描述
+---
+
+# index 1
+
+## index 2
+
+### index 3
+
+#### index 4
+
+##### index 5
+
+默认配置下， README.md 和 index.md 都会被转换成 index.html ，并且其对应的路由路径都是由斜杠结尾的。然而，如果你想同时保留这两个文件，就可能会造成冲突。
+
+index 优先级高
+
+你可以通过 Frontmatter 来覆盖当前页面的（defineUserConfig 中） lang, title, description 等属性。因此，你可以把 Frontmatter 当作页面级作用域的配置。
+
+**同样的，VuePress 有一些内置支持的 Frontmatter 字段，而你使用的主题也可能有它`自己的特殊 Frontmatter` 。**
+
+1.  语法扩展
+    VuePress 会使用 markdown-it 来解析 Markdown 内容，因此可以借助于 markdown-it 插件来实现 语法扩展 。
+
+    本章节将会介绍 VuePress 内置支持的 Markdown 语法扩展。
+
+    你也可以通过 markdown 和 extendsMarkdown 来配置这些内置扩展、加载更多 markdown-it 插件、实现你自己的扩展等
+
+    ```js
+    markdown: {
+    }
+    ```
+
+    <br/>
+    <!-- 相对路径 -->
+
+    [首页](../README.md)  
+    [配置参考](../reference/config.md)  
+    [快速上手](./getting-started.md)
+    <!-- 绝对路径 -->
+
+    [指南](/zh/guide/README.md)  
+    [配置参考 > markdown.links](/zh/reference/config.md#links)
+    <!-- URL -->
+
+    [GitHub](https://github.com)
+
+    VuePress 2 已经发布 :tada: ！
+
+    <!-- 2,3级目录放进来了 -->
+
+    [[toc]]
+
+    ```ts{1,6-8}
+    import { defaultTheme, defineUserConfig } from 'vuepress'
+
+    export default defineUserConfig({
+        title: '你好， VuePress',
+
+        theme: defaultTheme({
+            logo: 'https://vuejs.org/images/logo.png',
+        }),
+    })
+    ```
+
+    ```ts
+    // 行号默认是启用的
+    const line2 = "This is line 2";
+    const line3 = "This is line 3";
+    ```
+
+    ```ts:no-line-numbers
+    // 行号被禁用
+    const line2 = 'This is line 2'
+    const line3 = 'This is line 3'
+    ```
+
+    为了避免你的代码块被 Vue 编译， VuePress 默认会在你的代码块添加 v-pre 指令。这一默认行为可以在配置中关闭。
+    你可以在代码块添加 :v-pre / :no-v-pre 标记来覆盖配置项中的设置。
+    模板语法的字符有可能会被语法高亮器解析，比如 "Mustache" 语法（即双花括号）。因此，就像下面的例子一样，在某些语言中 :no-v-pre 可能并不能生效。
+
+    如果你无论如何都想在这种语言中使用 Vue 语法，你可以尝试禁用默认的语法高亮，然后在客户端实现你的自定义代码高亮。
+
+    ```md
+    <!-- 默认情况下，这里会被保持原样 -->
+
+    1 + 2 + 3 = {{ 1 + 2 + 3 }}
+    ```
+
+    ```md:no-v-pre
+    <!-- 这里会被 Vue 编译 -->
+    1 + 2 + 3 = {{ 1 + 2 + 3 }}
+    ```
+
+    ```js:no-v-pre
+    // 由于 JS 代码高亮，这里不会被正确编译
+    const onePlusTwoPlusThree = {{ 1 + 2 + 3 }}
+    ```
+
+    导入代码块
+    <!-- 最简单的语法 -->
+    
+    ```js
+        @[code](../foo.js)
+        @[code{3-10} js{3}:no-line-numbers](../foo.js)
+
+        在 Markdown 中使用 Vue ，这意味着， Markdown 中允许直接使用 Vue 模板语法。
+        一加一等于： {{ 1 + 1 }}
+
+        <span v-for="i in 3"> span: {{ i }} </span>
+        这是默认主题内置的 `<Badge />` 组件 <Badge text="演示" />
+    ```
+
+2.  静态资源
+    相对路径
+    你可以在你的 Markdown 内容中使用相对路径来引用静态资源：
+
+    ![图片](./image.png)
+    或
+
+    ![图片](image.png)
+    一般情况下，我们推荐你使用这种方式来引用图片，因为人们通常会把图片放在引用它的 Markdown 文件附近
+
+3.  Public
+    你可以把一些静态资源放在 Public 目录中，它们会被复制到最终生成的网站的根目录下。
+    默认的 Public 目录是 .vuepress/public ，可以通过 public 配置项来修改。
+    <!-- 你不需要给 `/images/hero.png` 手动添加 `/bar/` 前缀 -->
+
+    ![VuePress Logo](/images/favicon.ico)
+
+4.  依赖包和路径别名
+    尽管这不是常见用法，但是你可以从依赖包中引用图片：
+
+    ```js
+    npm install -D package-name
+    //由于 Markdown 会默认将图片链接视为相对链接，你需要使用 <img> 标签:
+
+    <img src="package-name/image.png" alt="来自依赖包的图片">
+    //在配置文件中设置的路径别名也同样支持：
+
+    import { getDirname, path } from '@vuepress/utils'
+
+    const \_\_dirname = getDirname(import.meta.url)
+
+    export default {
+        alias: {
+            '@alias': path.resolve(\_\_dirname, './path/to/some/dir'),
+        },
+    }
+    <img src="@alias/image.png" alt="来自路径别名的图片">
+    ```
+
+5.  站点多语言配置,主题多语言配置
+
+    ```js
+    站点多语言配置
+    要启用 VuePress 的多语言支持，首先需要使用如下的文件目录结构：
+
+    docs
+    ├─ README.md
+    ├─ foo.md
+    ├─ nested
+    │  └─ README.md
+    └─ zh
+    ├─ README.md
+    ├─ foo.md
+    └─ nested
+        └─ README.md
+    然后，在你的 配置文件 中设置 locales 选项：
+
+    export default {
+        locales: {
+            // 键名是该语言所属的子路径
+            // 作为特例，默认语言可以使用 '/' 作为其路径。
+            '/': {
+                lang: 'en-US',
+                title: 'VuePress',
+                description: 'Vue-powered Static Site Generator',
+            },
+            '/zh/': {
+                lang: 'zh-CN',
+                title: 'VuePress',
+                description: 'Vue 驱动的静态网站生成器',
+            },
+        },
+    }
+    如果一个语言没有声明 lang, title, description 或者 head ，VuePress 将会尝试使用顶层配置的对应值。如果每个语言都声明了这些值，那么顶层配置中的对应值可以被省略。
+
+    提示
+
+    配置参考： locales
+
+    主题多语言配置
+    VuePress 没有限制主题如何提供多语言支持，因此每个主题可能会有不同的多语言配置方式，而且部分主题可能不会提供多语言支持。建议你查看主题本身的文档来获取更详细的指引。
+
+    如果你使用的是默认主题，那么它提供多语言支持的方式和上述是一致的：
+
+    import { defaultTheme } from 'vuepress'
+
+    export default {
+        theme: defaultTheme({
+            locales: {
+                '/': {
+                    selectLanguageName: 'English',
+                },
+                '/zh/': {
+                    selectLanguageName: '简体中文',
+                },
+            },
+        }),
+    }
+    ```
+
+6.  主题
+    默认主题为文档网站提供了基础且实用的功能，你可以前往 默认主题配置参考 获取全部的配置列表。
+    然而，你可能觉得默认主题不够出色，又或者你不想搭建一个文档网站，而是一个其他类型的网站，比如博客。此时，你可以尝试使用社区主题或者创建本地主题
+    社区用户创建了很多主题，并将它们发布到了 NPM 上。查看主题本身的文档可以获取更详细的指引。
+    如果你想要使用自己的自定义主题，但是又不想发布它，你可以创建一个本地主题。前往 深入 > 开发主题 学习如何开发你自己的主题。
+    ```js
+    theme: defaultTheme({
+       // 默认主题配置
+       navbar: [
+           {
+               text: "首页",
+               link: "/",
+           },
+       ],
+    }),
+    ```
+7.  插件
+    借助于 插件 API ， VuePress 插件可以为你提供各种不同的功能
+
+    ```js
+    1.  社区插件
+        import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
+
+        export default {
+            plugins: [
+                googleAnalyticsPlugin({
+                    id: 'G-XXXXXXXXXX'
+                }),
+            ],
+        }
+    2.  本地插件
+        import myPlugin from './path/to/my-plugin.js'
+
+        export default {
+            plugins: [
+                myPlugin(),
+            ],
+        }
+    ```

@@ -1,0 +1,14 @@
+{
+  "name": "vuepress-theme-mytheme",
+  "version": "1.0.0",
+  "description": " vuepress-theme-mytheme",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vuepress-theme-mytheme"
+  ],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,38 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-09-29 15:03:47
+ * @LastEditors         : 
+ * @LastEditTime        : 2021-09-29 15:04:03
+ * @FilePath            : \new\7 vue\16 Vue之webpack打包基础---模块化思维\1  什么是模块化思维呢\2.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    先看一组模块化最基础实现思路：
+    <script>
+        // 定义module
+        var myModule = (function () {
+            var var1 = 1;
+            var var2 = 2;
+            function fn1() { }
+            function fn2() { }
+            return {
+                fn1,
+                fn2
+            };
+        })();
+        // 调用module
+        myModule.fn1()
+        myModule.fn2()
+    </script>
+</body>
+
+</html>

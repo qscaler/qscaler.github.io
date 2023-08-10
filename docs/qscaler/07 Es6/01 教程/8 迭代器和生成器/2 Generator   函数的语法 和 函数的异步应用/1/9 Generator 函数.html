@@ -1,0 +1,87 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-25 17:10:28
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-25 17:15:04
+ * @FilePath            : \new\6 Es6\12 Generator 函数的语法\9 Generator 函数.html
+-->
+最简单的Generator函数如下：
+
+function* g() { yield 'a'; yield 'b'; yield 'c'; return 'ending'; } g(); // 返回一个对象
+g函数呢，有四个阶段，分别是'a','b','c','ending'。
+
+Generator 函数神奇之一：g()并不执行g函数
+g()并不会执行g函数，返回的也不是函数运行结果，而是一个指向内部状态的指针对象，也就是迭代器对象（Iterator Object）。
+
+Generator 函数神奇之二：分段执行
+先看如下代码：
+
+<script>
+    function* g() {
+        yield 'a';
+        yield 'b';
+        yield 'c';
+        return 'ending';
+    }
+    var gen = g();
+    gen.next();
+    // 返回Object {value: "a", done: false}
+</script>
+gen.next()返回一个非常非常简单的对象{value: "a", done: false}，'a'就是g函数执行到第一个yield语句之后得到的值，false表示g函数还没有执行完，只是在这暂停。
+
+如果再写一行代码，还是gen.next();，这时候返回的就是{value: "b", done: false}，说明g函数运行到了第二个yield语句，返回的是该yield语句的返回值'b'。返回之后依然是暂停。
+
+再写一行gen.next();返回{value: "c", done: false}，再写一行gen.next();，返回{value: "ending", done: true}，这样，整个g函数就运行完毕了。
+
+提问：如果再写一行gen.next();呢？
+答：返回{value: undefined, done: true}，这样没意义。
+
+提问：如果g函数没有return语句呢？
+答：那么第三次.next()之后就返回{value: undefined, done: true}，这个第三次的next()唯一意义就是证明g函数全部执行完了。
+
+提问：如果g函数的return语句后面依然有yield呢？
+答：js的老规定：return语句标志着该函数所有有效语句结束，return下方还有多少语句都是无效，白写。
+
+提问：如果g函数没有yield和return语句呢？
+答：第一次调用next就返回{value: undefined, done: true}，之后也是{value: undefined, done: true}。
+
+提问：如果只有return语句呢？
+答：第一次调用就返回{value: xxx, done: true}，其中xxx是return语句的返回值。之后永远是{value: undefined, done: true}。
+
+
+
+
+提问：下面代码会有什么结果？
+
+<script>
+    function* g() {
+        debugger
+        var o = 1;
+        yield o++;
+        yield o++;
+        yield o++;
+    }
+    var gen = g();
+    console.log(gen.next()); // {value: 1, done: false}
+    console.log(gen.next()); // {value: 2, done: false}
+</script>
+答：见上面注释。每个迭代器之间互不干扰，作用域独立。
+
+继续提问：如果第二个yield o++;改成yield;会怎样？
+答：那么指针指向这个yield的时候，返回{value: undefined, done: false}。
+
+继续提问：如果第二个yield o++;改成o++;yield;会怎样？
+答：那么指针指向这个yield的时候，返回{value: undefined, done: false}，因为返回的永远是yield后面的那个表达式的值。
+
+所以现在可以看出，每次调用next方法，内部指针就从函数头部或上一次停下来的地方开始执行，
+直到遇到下一个yield语句（或return语句）为止。换言之，Generator函数是分段执行的，yield语句是暂停执行的标记，而next方法可以恢复执行。
+
+总之，每调用一次Generator函数，就返回一个迭代器对象，代表Generator函数的内部指针。
+以后，每次调用迭代器对象的next方法，就会返回一个有着value和done两个属性的对象。
+value属性表示当前的内部状态的值，是yield语句后面那个表达式的值；done属性是一个布尔值，表示是否遍历结束。
+
+所以可以看出，Generator 函数的特点就是：
+
+1、分段执行，可以暂停
+2、可以控制阶段和每个阶段的返回值
+3、可以知道是否执行到结尾

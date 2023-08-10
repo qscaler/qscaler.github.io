@@ -1,0 +1,28 @@
+<!-- 这是为了测试内嵌模块与外部模块之间的优先级 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+
+function moduleC(){
+    console.log("This is ModuleC!");
+}
+moduleC();
+let helloC = function(){
+    console.log("This is helloC!");
+}
+
+export {helloC};
+    </script>
+    <script src="./moduleA.js" type="module"></script>
+</head>
+<body>
+    <h1>
+        测试内嵌模块与外部模块之间的优先级。
+    </h1>
+</body>
+</html>

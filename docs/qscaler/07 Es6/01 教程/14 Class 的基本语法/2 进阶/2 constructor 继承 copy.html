@@ -1,0 +1,42 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-06-22 14:12:38
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-06-22 14:24:42
+ * @FilePath            : \new\6 Es6\1 constructor.html\2 constructor 继承 copy.html
+-->
+<script>
+    class Father {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        sum() {
+            console.log(this.x + this.y);
+            // console.log(1 + 2);
+        }
+    }
+    class Son extends Father {
+        // 子类中没有 constructor 构造方法时，并且父类中的方法没有涉及到父类中的 constructor 子类是可以直接通过 extends 来继承父类身上的方法的
+        constructor(x, y, uname) {
+            // 如果运用到了父类中的构造函数 constructor, 子类想再次调用则需要 ,子类也声明 constructor 构造函数并且通过 super() 方法传递想要的参数，进行计算
+            // super(x, y); // super() 方法必须写到子类构造方法中的最前面，高于自身的this
+            super(); // super() 方法必须写到子类构造方法中的最前面，高于自身的this
+            this.uname = uname;
+        }
+        // 如果子类中存在于父类相同的方法，调用时就近原则
+        sum() {
+            // console.log(2 + 2);
+            // 也可以通过super()方法直接调用 父类中的sum方法
+            super.sum();
+        }
+        // 子类可以拓展自己的方法
+        print() {
+            console.log(this.uname);
+        }
+    }
+    var son = new Son();
+    son.x = 100
+    son.y = 200
+    son.sum(); // 300
+</script>

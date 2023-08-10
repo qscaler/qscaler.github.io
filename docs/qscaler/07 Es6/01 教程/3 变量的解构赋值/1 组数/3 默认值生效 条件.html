@@ -1,0 +1,17 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-10-05 08:47:43
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-10-05 08:48:09
+ * @FilePath            : \new\6 Es6\3 变量的解构赋值\1 组数的解构赋值\3 默认值生效 条件.html
+-->
+<script>
+    // 注意，ES6 内部使用严格相等运算符（===），判断一个位置是否有值。所以，只有当一个数组成员严格等于undefined，默认值才会生效。
+
+    let [x = 1] = [undefined];
+    x // 1
+
+    let [x = 1] = [null];
+    x // null
+        // 上面代码中，如果一个数组成员是null，默认值就不会生效，因为null不严格等于undefined。
+</script>

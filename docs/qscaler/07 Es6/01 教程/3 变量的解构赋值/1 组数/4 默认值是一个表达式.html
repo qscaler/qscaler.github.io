@@ -1,0 +1,24 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-10-05 08:49:52
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-10-05 08:49:52
+ * @FilePath            : \new\6 Es6\3 变量的解构赋值\1 组数的解构赋值\4 默认值是一个表达式.html
+-->
+<script>
+    // 如果默认值是一个表达式，那么这个表达式是惰性求值的，即只有在用到的时候，才会求值。
+
+    function f() {
+        console.log('aaa');
+    }
+
+    let [x = f()] = [1];
+    // 上面代码中，因为x能取到值，所以函数f根本不会执行。上面的代码其实等价于下面的代码。
+
+    let x;
+    if ([1][0] === undefined) {
+        x = f();
+    } else {
+        x = [1][0];
+    }
+</script>

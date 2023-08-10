@@ -1,0 +1,177 @@
+<!--
+ * @Project:
+ * @FileName:
+ * @Remark:
+ * @Author: qxp
+ * @Date: 2020-09-02 16:26:20
+ * @LastEditors: qxp
+ * @LastEditTime: 2020-09-02 19:19:55
+ * @FilePath: \vue\1 原理\1 study\2 进阶\promise\1.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // function test() {
+        //         let arr = [3, 2, 1]
+        //         arr.forEach(async item => {
+        //             const res = await fetch(item)
+        //             console.log(res)
+        //         })
+        //         console.log('end')
+        //     }
+
+        //     function fetch(x) {
+        //         return new Promise((resolve, reject) => {
+        //             setTimeout(() => {
+        //                 resolve(x)
+        //             }, 500 * x)
+        //         })
+        //     }
+
+        //     test()
+
+            // let a=1;
+            // var promise = new Promise(function (resolve, reject) {
+            //         // ... some code
+
+            //         if (true) {
+            //             resolve(1111);
+            //         } else {
+            //             reject(2222);
+            //         }
+            //     });
+
+            //     promise.then(function (value) {
+            //     console.log("value", value)
+            //             // success
+            //              console.log(this);
+            //             console.log(a);
+            //         }, function (error) {
+            //         console.log("error", error)
+            //             // failure
+            //         });
+
+
+
+                    //  let a = 1;
+                    //     var promise = new Promise(function (resolve, reject) {
+                    //         // ... some code
+
+                    //         if (true) {
+                    //             resolve(1111);
+                    //         } else {
+                    //             reject(2222);
+                    //         }
+                    //     });
+
+                    //     promise.then( (value)=> {
+                    //         console.log("value", value)
+                    //         // success
+                    //         console.log(this);
+                    //         console.log(a);
+                    //     }, function (error) {
+                    //         console.log("error", error)
+                    //         // failure
+                    //     });
+
+
+
+                    // function p(type) {
+                    //     return new Promise((resolve, reject) => {
+                    //         if (type == 'yes') {
+                    //             setTimeout(() => {
+                    //                 resolve('resolved');
+                    //             }, 500);
+                    //         } else {
+                    //             setTimeout(() => {
+                    //                 reject('rejected');
+                    //             }, 500);
+                    //         }
+                    //     })
+                    // }
+                    // function resolve() {
+                        // console.log('before:', this)
+                        // p('yes').then(res => {
+                        //     console.log('res', this);
+                        //     console.log(res);
+                        // }).catch(err => {
+                        //     console.log('err', this);
+                        //     console.log(err);
+                        // })
+
+
+                        //   p('yes').then(function(res) {
+                        //         console.log('res', this);
+                        //         console.log(res);
+                        //     }).catch(err => {
+                        //         console.log('err', this);
+                        //         console.log(err);
+                        //     })
+                    // }
+
+
+
+                    // const promise = new Promise((resolve, reject) => {
+                    //         console.log(1);
+                    //         resolve();
+                    //         console.log(2);
+                    //     })
+                    //     promise.then(() => {
+                    //         console.log(3);
+                    //     })
+                    //     console.log(4);
+
+
+                        // 1 2 4 3
+
+    // https://www.jianshu.com/p/4bb1521343ba
+                        // const promise = new Promise((resolve, reject) => {
+                        //         resolve('success1');
+                        //         reject('error');
+                        //         resolve('success2');
+                        //     });
+                        //     promise.then((res) => {
+                        //         console.log('then:', res);
+                        //     }).catch((err) => {
+                        //         console.log('catch:', err);
+                        //     })
+
+
+                            // Promise.resolve(1)
+                            //         .then(2)
+                            //         .then(Promise.resolve(3))
+                            //         .then(console.log)
+
+                                    // 1
+
+
+                                    // const first = () => (new Promise((resolve, reject) => {
+                                    //         console.log(3);
+                                    //         let p = new Promise((resolve, reject) => {
+                                    //             console.log(7);
+                                    //             setTimeout(() => {
+                                    //                 console.log(5);
+                                    //                 resolve(6);
+                                    //             }, 0)
+                                    //             resolve(1);
+                                    //         });
+                                    //         resolve(2);
+                                    //         p.then((arg) => {
+                                    //             console.log(arg);
+                                    //         });
+
+                                    //     }));
+
+                                    //     first().then((arg) => {
+                                    //         console.log(arg);
+                                    //     });
+                                    //     console.log(4);
+    </script>
+</body>
+</html>

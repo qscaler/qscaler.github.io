@@ -1,0 +1,75 @@
+<!--
+ * @Project:
+ * @FileName:
+ * @Remark:
+ * @Author: qxp
+ * @Date: 2020-08-20 14:11:20
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-11-08 18:38:15
+ * @FilePath            : \new\3 js\02 高级\01\4.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+        //1.什么是原型链？
+            //每个构造函数都有原型对象 prototype
+            //每个对象都会有构造函数
+            //每个构造函数的原型都是一个对象
+            //那么这个原型对象也会有构造函数
+            //那么这个原型对象的构造函数也会有原型对象
+            //这样就会形成一个链式的结构，称为原型链
+
+
+            //每个构造函数都有原型对象
+            //每个对象都会有构造函数
+            //每个构造函数的原型都是一个对象
+            //这样就会形成一个链式的结构，称为原型链
+     
+        3 箭头函数的特点
+          箭头函数其实是没有 this 的，这个函数中的 this 只取决于他外面的第一个不是箭头函数的函数的 this
+
+        4  This
+        5 async、await
+            <script>
+                debugger
+                var a = 0
+                var b = async () => {
+                    // 首先函数b 先执行，在执行到 await 10 之前变量 a 还是 0，
+                    // 因为在 await 内部实现了 generators ，generators 会保留堆栈中东西，所以这时候 a = 0 被保存了下来
+                    a = a + await 10
+                    console.log('2', a) // -> '2' 10
+                    a = (await 10) + a
+                    console.log('3', a) // -> '3' 20
+                }
+                b()
+                a++
+                console.log('1', a) // -> '1' 1
+
+
+                async function fn() {
+                    console.log('a')
+                }
+                fn()
+                console.log('b')
+                //a
+                //b
+            </script>
+            1 await只能放在async函数里
+            2 await后面接一个会return new promise的函数并执行它
+                1 await 不是promise对象 await会阻塞后面的代码，先执行async外面的同步代码，同步代码执行完，再回到async内部，把这个非promise的东西，作为 await表达式的结果
+                2 await 也会暂停async后面的代码，先执行async外面的同步代码，等着 Promise 对象 fulfilled，然后把 resolve 的参数作为 await 表达式的运算结果。
+                3 如果asycn里的代码都是同步的，那么这个函数被调用就会同步执行
+                4
+
+                5
+</body>
+
+</html>

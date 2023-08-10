@@ -1,0 +1,40 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-10-19 16:47:50
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-10-19 16:49:27
+ * @FilePath            : \new\6 Es6\15 Module （模块）的语法\4 ES6模块\1.1 加载.html
+-->
+
+
+1 浏览器加载 ES6 模块，也使用<script>标签，但是要加入type = "module"属性。
+
+
+
+<script type="module" src="./foo.js"></script>
+上面代码在网页中插入一个模块foo.js，由于type属性设为module，所以浏览器知道这是一个 ES6 模块。浏览器对于带有type="module"的<script>，
+都是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本，等同于打开了<script>标签的defer属性。
+
+<script type="module" src="./foo.js"></script>
+<!-- 等同于 -->
+<script type="module" src="./foo.js" defer></script>
+
+
+
+
+
+
+如果网页有多个<script type="module">，它们会按照在页面出现的顺序依次执行。<script>标签的async属性也可以打开，这时只要加载完成，
+渲染引擎就会中断渲染立即执行。执行完成后，再恢复渲染。
+
+<script type="module" src="./foo.js" async></script>
+一旦使用了async属性，<script type="module">就不会按照在页面出现的顺序执行，而是只要该模块加载完成，就执行该模块。
+
+
+
+    
+ ES6 模块也允许内嵌在网页中，语法行为与加载外部脚本完全一致。
+<script type="module">
+    import utils from "./utils.js";
+    // other code
+</script>

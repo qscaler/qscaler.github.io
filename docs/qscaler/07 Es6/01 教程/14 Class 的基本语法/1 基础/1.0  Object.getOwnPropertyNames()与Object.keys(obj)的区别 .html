@@ -1,0 +1,89 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-26 16:06:59
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-26 16:14:28
+ * @FilePath            : \new\6 Es6\14 Class 的基本语法\1.0  Object.getOwnPropertyNames()与Object.keys(obj)的区别 .html
+-->
+大部分情况下Object.getOwnPropertyNames()与Object.keys(obj)的功能是一样的，我们一般也是用来获取一个JSON对象中所有属性，例如
+<script>
+    const obj = {
+        property1: 1,
+        property2: 2,
+    };
+    console.log(Object.keys(obj));
+    console.log(Object.getOwnPropertyNames(obj));
+
+    // 输出：
+    // > Array["property1", "property2"]
+    // > Array["property1", "property2"]
+</script>
+那就是Object.getOwnPropertyNames返回的是对象所有自己的属性，
+而Object.keys(obj)则返回的是所有可枚举属性，也就是属性下的enumerable: false
+<script>
+    const obj = {};
+    Object.defineProperties(obj, {
+        property1: { enumerable: true, value: 1 },
+        property2: { enumerable: false, value: 2 },
+    });
+    console.log(Object.keys(obj));
+    console.log(Object.getOwnPropertyNames(obj));
+
+    // 输出：
+    // > Array["property1"]
+    // > Array["property1", "property2"]
+    Object.defineProperty(o, 'd', {
+        //当且仅当该属性的 configurable 键值为 true 时，该属性的描述符才能够被改变，同时该属性也能从对应的对象上被删除
+        configurable: false,  
+        //当且仅当该属性的 enumerable 键值为 true 时，该属性才会出现在对象的枚举属性中 
+        // 下面三个操作不会取到该属性。
+        //     * for..in循环
+        //     * Object.keys方法
+        //     * JSON.stringify方法
+        enumerable: false,   
+
+
+        value: 4,
+        // 当且仅当该属性的 writable 键值为 true 时，属性的值，也就是上面的 value，才能被赋值运算符改变 
+        writable: false,
+        //属性的 getter 函数，如果没有 getter，则为 undefined。当访问该属性时，会调用此函数,执行时不传入任何参数，
+        // 但是会传入 this 对象（由于继承关系，这里的this并不一定是定义该属性的对象）。该函数的返回值会被用作属性的值。
+        get: undefined,   
+        // 属性的 setter 函数，如果没有 setter，则为 undefined。当属性值被修改时，会调用此函数该方法接受一个参数（也就是被赋予的新值），
+        // 会传入赋值时的 this 对象。
+        set: undefined,
+
+    });
+</script>
+可以看到输出结果不一样了，enumerable: false被Object.getOwnPropertyNames干掉了。
+
+
+<!-- hasOwnProperty -->
+JavaScript中Object对象原型上的hasOwnProperty()用来判断一个属性是定义在对象本身而不是继承自原型链。
+https://www.jianshu.com/p/437503ea6875
+<script>
+    obj.hasOwnProperty(key)
+    Object.prototype.hasOwnProperty.call(obj, key)
+    Object.hasOwnProperty.call(obj, key)
+    Object.prototype.hasOwnProperty === Object.hasOwnProperty // true
+
+    o = new Object();
+    o.prop = 'exists';
+    o.hasOwnProperty('prop');             // 返回 true
+    o.hasOwnProperty('toString');         // 返回 false
+    o.hasOwnProperty('hasOwnProperty');   // 返回 false
+
+    var foo = {
+        hasOwnProperty: function () {
+            return false;
+        },
+        bar: 'Hello'
+    };
+
+    foo.hasOwnProperty('bar'); // 始终返回 false
+
+    // 不能使用 该对象.hasOwnProperty 这种方法，怎么来解决这个问题呢？我们需要使用原型链上真正的 hasOwnProperty 方法：
+    ({}).hasOwnProperty.call(foo, 'bar'); // true
+        // 或者：
+    Object.prototype.hasOwnProperty.call(foo, 'bar'); // true
+</script>

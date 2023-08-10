@@ -1,0 +1,123 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-26 16:20:34
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-26 16:33:45
+ * @FilePath            : \new\6 Es6\14 Class 的基本语法\2 constructor 方法.html
+-->
+1 constructor()方法是类的默认方法，通过new命令生成对象实例时，
+自动调用该方法。一个类必须有constructor()方法，如果没有显式定义，一个空的constructor()方法会被默认添加。
+<script>
+    class Point {
+    }
+
+    // 等同于
+    class Point {   //类必须使用new调用，否则会报错。这是它跟普通构造函数的一个主要区别，后者不用new也可以执行。
+        constructor(x, y) {   //上面代码中，定义了一个空的类Point，JavaScript 引擎会自动为它添加一个空的constructor()方法。   
+            this.x = x;
+            this.y = y;
+            return Object.create(null);
+        } //方法默认返回实例对象（即this），完全可以指定返回另外一个对象。  
+    }
+    let point=new Point()
+    point.hasOwnProperty('x') // true
+    point.hasOwnProperty('y') // true
+    point.hasOwnProperty('toString') // false
+    // x和y都是实例对象point自身的属性（因为定义在this变量上），所以hasOwnProperty()方法返回true，
+    // 而toString()是原型对象的属性（因为定义在Point类上），所以hasOwnProperty()方法返回false。这些都与 ES5 的行为保持一致。
+</script>
+
+2 取值函数（getter）和存值函数（setter）
+<script>
+    class MyClass {
+        constructor() {
+            // ...
+        }
+        get prop() {
+            return 'getter';
+        }
+        set prop(value) {
+            console.log('setter: ' + value);
+        }
+    }
+
+    let inst = new MyClass();
+
+    inst.prop = 123;
+    // setter: 123
+
+    inst.prop
+    // 'getter'
+</script>
+3 属性表达式
+<script>
+    let methodName = 'getArea';
+
+    class Square {
+        constructor(length) {
+            // ...
+        }
+
+        [methodName]() {
+            // ...
+        }
+    }
+</script>
+
+4 Class 表达式
+<script>
+    const MyClass = class Me {   //这个类的名字是Me，但是Me只在 Class 的内部可用，指代当前类。在 Class 外部，这个类只能用MyClass引用
+        getClassName() {
+            return Me.name;//'Me'
+        }
+    };
+    // 上面代码表示，Me只在 Class 内部有定义。 如果类的内部没用到的话，可以省略Me，也就是可以写成下面的形式
+    const MyClass = class { /* ... */ };
+</script>
+注意点
+（1）严格模式 
+    类和模块的内部，默认就是严格模式
+（2）不存在提升
+    类不存在变量提升（hoist），这一点与 ES5 完全不同。
+    new Foo(); // ReferenceError
+    class Foo {}
+（3）name 属性
+    class Point {}
+    Point.name // "Point"
+（4）Generator 方法。
+    如果某个方法之前加上星号（*），就表示该方法是一个 Generator 函数。
+（5）this 的指向
+    一个比较简单的解决方法是，在构造方法中绑定this，这样就不会找不到print方法了。
+<script>
+    class Logger {
+        constructor() {
+            this.printName = this.printName.bind(this);
+        }
+        printName(){
+
+        }
+        // ...
+    }
+    // 另一种解决方法是使用箭头函数。
+
+    class Obj {
+        constructor() {
+            this.getThis = () => this;
+        }
+        getThis(){
+
+        }
+    }
+
+    class Obj {
+        constructor() {
+        }
+        getThis=()=> {
+            
+        }
+    }
+
+
+    const myObj = new Obj();
+    myObj.getThis() === myObj // true
+</script>

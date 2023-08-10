@@ -1,0 +1,120 @@
+<!--
+ * @Project:
+ * @FileName:
+ * @Remark:
+ * @Author: qxp
+ * @Date: 2020-08-21 00:13:34
+ * @LastEditors: qxp
+ * @LastEditTime: 2020-08-21 00:21:44
+ * @FilePath: \vue\1 原理\1 study\1 基础\3 js\5 手写Promise.html
+-->
+1 请手写实现一个promise
+    <!-- https://segmentfault.com/a/1190000013396601 -->
+    <!-- https://segmentfault.com/a/1190000006921539?utm_source=sf-related -->
+    <div id="app"></div>
+    <script>
+        /**
+         * [3种状态]
+         * @type {String}
+        */
+        var PENDING = "pending";
+        var RESOLVED = "resolved";
+        var REJECTED = "rejected";
+
+        /**
+         * [Promise类实现]
+         * 构造函数传入一个fn，有两个参数，resolve：成功回调; reject：失败回调;
+         * state: 状态存储
+         * doneList: 成功处理函数列表
+         * failList: 失败处理函数列表
+         * done: 注册成功处理函数
+         * fail: 注册失败处理函数
+         * then: 同时注册成功和失败处理函数
+         * always: 一个处理注册到成功和失败，都会调用
+         * resolve: 更新state为：RESOLVED，并且执行成功处理队列
+         * reject: 更新state为：REJECTED，并且执行失败处理队列
+         */
+        var Promise = (function () {
+            function Promise(fn) {
+                this.state = PENDING;
+                this.doneList = [];
+                this.failList = [];
+                this.fn = fn;
+                this.fn(this.resolve.bind(this), this.reject.bind(this))
+            }
+
+            var p = {
+                done: function (cb) {
+                    if (typeof cb == "function")
+                        this.doneList.push(cb)
+                    return this;
+                },
+                fail: function (cb) {
+                    if (typeof cb == "function")
+                        this.failList.push(cb);
+                    return this;
+                },
+                then: function (success, fail) {
+                    this.done(success || noop).fail(fail || noop)
+                    return this;
+                },
+                always: function (cb) {
+                    this.done(cb).fail(cb)
+                    return this;
+                },
+                resolve: function () {
+                    this.state = RESOLVED;
+                    var lists = this.doneList;
+                    for (var i = 0, len = lists.length; i < len; i++) {
+                        lists[0].apply(this, arguments);
+                        lists.shift();
+                    }
+                    return this;
+                },
+                reject: function () {
+                    this.state = REJECTED;
+                    var lists = this.failList;
+                    for (var i = 0, len = lists.length; i < len; i++) {
+                        lists[0].apply(this, arguments);
+                        lists.shift();
+                    }
+                    return this;
+                }
+            }
+            for (var k in p) {
+                Promise.prototype[k] = p[k]
+            }
+
+            return Promise;
+        })();
+
+        function noop() { }
+        // ------------------------------------------------------------------
+        var text_ok = "", text_fail = "";
+        var App =  document.getElementById('app');
+        function test(){
+            return new Promise(function (resolve, reject){
+            setTimeout(function () {
+                if ((Math.floor(Math.random() * 10) & 1) == 1) {
+                    resolve("dongsheng")
+                } else {
+                    reject("dataError")
+                }
+            }, 2000)
+        });
+        }
+
+        function start(){
+            var P = test();
+            P.then(function (data){
+                text_ok += "成功回调,附带参数是: " + data + "<br>";
+                App.innerHTML = text_ok;
+            }, function (data){
+                App.innerHTML = new Error("失败回调,参数： " + data + "<br><br><br>");
+            }).done(function (){
+                text_ok += "成功回调第二个handler<br><br><br>";
+                App.innerHTML = text_ok;
+            })
+        }
+        start();
+    </script>

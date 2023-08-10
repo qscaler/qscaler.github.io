@@ -1,0 +1,17 @@
+:root {
+  --content-width: 850px;
+}
+
+strong {
+  padding: 1px;
+  color: #ee3f4d;
+}
+
+.anchor-right .anchor-right-content {
+  right: -30rem !important;
+  width: 25rem !important;
+
+  .level {
+    line-height: 1.8rem;
+  }
+}
