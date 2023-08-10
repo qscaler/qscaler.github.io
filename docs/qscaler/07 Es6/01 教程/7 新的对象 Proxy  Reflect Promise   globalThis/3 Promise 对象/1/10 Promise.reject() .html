@@ -1,0 +1,40 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-25 11:28:47
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-25 11:30:27
+ * @FilePath            : \new\6 Es6\10 Promise 对象\10 Promise.reject() .html
+-->
+Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。
+
+<script>
+    const p = Promise.reject();
+    // 等同于
+    const p = new Promise((resolve, reject) => reject())
+
+    p.then(null, function (s) {
+        console.log(s)
+    });
+
+
+
+    const p = Promise.reject('出错了');
+    // 等同于
+    const p = new Promise((resolve, reject) => reject('出错了'))
+
+    p.then(null, function (s) {
+        console.log(s)
+    });
+    // 出错了
+
+    //    Promise.reject()方法的参数，会原封不动地作为reject的理由，变成后续方法的参数。
+
+    Promise
+        .reject('出错了')
+        .catch(e => {
+            console.log(e === '出错了')
+        })
+    // true
+    // 上面代码中，Promise.reject()方法的参数是一个字符串，后面catch()方法的参数e就是这个字符串。
+</script>
+

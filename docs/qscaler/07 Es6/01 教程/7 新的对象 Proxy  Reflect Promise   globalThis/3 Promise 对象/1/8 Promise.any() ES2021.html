@@ -1,0 +1,47 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-25 11:02:58
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-25 11:19:43
+ * @FilePath            : \new\6 Es6\10 Promise 对象\8 Promise.any() ES2021.html
+-->
+ES2021 引入了Promise.any()方法。该方法接受一组 Promise 实例作为参数，包装成一个新的 Promise
+实例返回。只要参数实例有一个变成fulfilled状态，包装实例就会变成fulfilled状态；
+如果所有参数实例都变成rejected状态，包装实例就会变成rejected状态。
+
+Promise.any()跟Promise.race()方法很像，只有一点不同，就是不会因为某个 Promise 变成rejected状态而结束。
+Promise.any()抛出的错误，不是一个一般的错误，而是一个 AggregateError 实例。
+它相当于一个数组，每个成员对应一个被rejected的操作所抛出的错误
+
+<script>
+    const promises = [
+        fetch('/endpoint-a').then(() => 'a'),
+        fetch('/endpoint-b').then(() => 'b'),
+        fetch('/endpoint-c').then(() => 'c'),
+    ];
+    try {
+        const first = await Promise.any(promises);
+        console.log(first);  //  3个都错误  AggregateError: All promises were rejected
+    } catch (error) {
+        console.log(error);
+    }
+</script>
+上面代码中，Promise.any()方法的参数数组包含三个 Promise 操作。其中只要有一个变成fulfilled，Promise.any()返回的 Promise
+对象就变成fulfilled。如果所有三个操作都变成rejected，那么await命令就会抛出错误。
+
+<script>
+    var resolved = Promise.resolve(42);
+    var rejected = Promise.reject(-1);
+    var alsoRejected = Promise.reject(Infinity);
+
+    Promise.any([resolved, rejected, alsoRejected]).then(function (result) {
+        console.log(result); // 42
+    });
+
+    Promise.any([rejected, alsoRejected]).catch(function (results) {
+        console.log(results); // [-1, Infinity]
+    });
+</script>
+
+Promise.race()对完成感兴趣。首先完成的 Promise 是“胜利”
+Promise.any()对成功感兴趣。首先成功的 Promise 是“胜利”

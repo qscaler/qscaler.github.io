@@ -1,0 +1,18 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-26 16:52:06
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-26 16:52:28
+ * @FilePath            : \new\6 Es6\14 Class 的基本语法\7 new.target 属性.html
+-->
+Class 内部调用new.target，返回当前 Class。
+<script>
+    class Rectangle {
+        constructor(length, width) {
+            console.log(new.target === Rectangle);
+            this.length = length;
+            this.width = width;
+        }
+    }
+    var obj = new Rectangle(3, 4); // 输出 true
+</script>

@@ -1,0 +1,100 @@
+<!--
+ * @Project:
+ * @FileName:
+ * @Remark:
+ * @Author: qxp
+ * @Date: 2020-08-20 21:48:54
+ * @LastEditors: qxp
+ * @LastEditTime: 2020-11-01 15:50:34
+ * @FilePath: \vue\1 原理\1 study\1 基础\3 js\1.1 模块化.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    1 模块化（AMD、CMD） https://www.jianshu.com/p/890c83fbcf50 https://www.cnblogs.com/cherryvenus/p/9722304.html
+    <script>
+        // 定义module
+        var myModule = (function () {
+            var var1 = 1;
+            var var2 = 2;
+            function fn1() { }
+            function fn2() { }
+            return {
+                fn1,
+                fn2
+            };
+        })();
+        // 调用module
+        myModule.fn1()
+        myModule.fn2()
+    </script>
+
+
+    2 CommonJS规范 用在服务器端的node的模块规范，前端的webpack也是对CommonJS原生支持的。
+        根据CommonJS规范，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，
+        也就是说，在该模块内部定义的变量，无法被其他模块读取，除非定义为global对象的属性.
+    <script>
+        //模块定义 myModel.js
+        var name = 'Byron';
+        function printName() {
+            console.log(name);
+        }
+        function printFullName(firstName) {
+            console.log(firstName + name);
+        }
+        module.exports = {
+            printName: printName,
+            printFullName: printFullName
+        }
+
+        //加载模块
+        var nameModule = require('./myModel.js');
+        nameModule.printName();
+
+        A.js
+            //写法一
+            module.exports = {
+                a: 1,
+                b: 2
+            }
+            //写法二
+            // module.exports.a=1;
+            // module.exports.b = 2;
+
+
+            //写法三
+            // exports.a=1;
+            // exports.b = 2
+
+            // 三种写法结果是一样，对外暴露的接口的结果是一致的
+        B.js
+
+            const  test = require('./B.js')
+            console.log(test);//{a:1,b:2}
+
+
+
+
+
+
+
+
+
+
+    // vue 模块化原理
+    // 它就是把一些js模块给独立出一个个js文件，然后需要用到的时候，在创建一个script对象，加入到document.head对象中即可，
+    // 浏览器会自动帮我们发起请求，去请求这个js文件，在写个回调，去定义得到这个js文件后，需要做什么业务逻辑操作。
+
+    https://blog.csdn.net/pengjunlee/article/details/100114462?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param
+    https://blog.csdn.net/xm1037782843/article/details/88225104
+    </script>
+</body>
+
+</html>

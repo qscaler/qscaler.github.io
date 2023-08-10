@@ -1,0 +1,48 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-10-05 09:02:15
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-10-05 09:02:15
+ * @FilePath            : \new\6 Es6\3 变量的解构赋值\2 对象的解构赋值\3 注意点.html
+-->
+
+<script>
+    // （1）如果要将一个已经声明的变量用于解构赋值，必须非常小心。
+    // 错误的写法
+    let x;
+    { x } = { x: 1 };
+    // SyntaxError: syntax error
+    // 上面代码的写法会报错，因为 JavaScript 引擎会将{ x } 理解成一个代码块，从而发生语法错误。只有不将大括号写在行首，避免 JavaScript 将其解释为代码块，才能解决这个问题。
+
+    // 正确的写法
+    let x;
+    ({ x } = { x: 1 });
+
+
+    默认值
+        let { x = 10 } = {};
+        log(x);//10
+        //////
+        let { x, y = 3 } = { x: 10 };
+        log(x，y);//10,3
+
+        2: 函数参数的的解构与默认值
+        设置默认参数，直接在接收参数处赋值
+        const log = (x, y = 'World') => console.log(x, y);
+
+        log('Hello') // Hello World
+        log('Hello', 'China') // Hello China
+        log('Hello', '') // Hello
+
+        参数的默认值与解构赋值混合
+        const foo = ({ x, y = 10 }) => console.log(x, y);
+
+        foo({}) // undefined 10
+        foo({ x: 1 }) // 1 10
+        foo({ x: 1, y: 2 }) // 1 2
+        foo() // TypeError: Cannot destructure property `x` of 'undefined' or 'null'.
+        如下，则正确：直接在参数里面再给对象赋值一个空对象：{ x, y = 10 }={ }
+        const foo = ({ x, y = 10 } = {}) => console.log(x, y);
+        foo() // undefined 10
+    
+</script>

@@ -1,0 +1,131 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-25 10:25:33
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-25 10:35:09
+ * @FilePath            : \new\6 Es6\10 Promise 对象\3 Promise.prototype.catch().html
+-->
+<script>
+    // bad
+    promise
+        .then(function (data) {
+            // success
+        }, function (err) {
+            // error
+        });
+
+    // good
+    promise
+        .then(function (data) { //cb
+            // success
+        })
+        .catch(function (err) {
+            // error
+        });
+</script>
+上面代码中，第二种写法要好于第一种写法，理由是第二种写法可以捕获前面then方法执行中的错误，
+也更接近同步的写法（try/catch）。因此，建议总是使用catch()方法，而不使用then()方法的第二个参数。
+
+跟传统的try/catch代码块不同的是，如果没有使用catch()方法指定错误处理的回调函数，
+Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。
+<script>
+    const someAsyncThing = function () {
+        return new Promise(function (resolve, reject) {
+            // 下面一行会报错，因为x没有声明
+            resolve(x + 2);
+        });
+    };
+
+    someAsyncThing().then(function () {
+        console.log('everything is great');
+    });
+
+    setTimeout(() => { console.log(123) }, 2000);
+// Uncaught (in promise) ReferenceError: x is not defined
+// 123
+</script>
+上面代码中，someAsyncThing()函数产生的 Promise 对象，内部有语法错误。浏览器运行到这一行，
+会打印出错误提示ReferenceError: x is not defined，但是不会退出进程、终止脚本执行，2
+秒之后还是会输出123。这就是说，Promise 内部的错误不会影响到 Promise 外部的代码，通俗的说法就是“Promise 会吃掉错误”。
+
+这个脚本放在服务器执行，退出码就是0（即表示执行成功）。不过，Node.js 有一个unhandledRejection事件，
+专门监听未捕获的reject错误，上面的脚本会触发这个事件的监听函数，可以在监听函数里面抛出错误。
+
+process.on('unhandledRejection', function (err, p) {
+throw err;
+});
+上面代码中，unhandledRejection事件的监听函数有两个参数，第一个是错误对象，第二个是报错的 Promise 实例，它可以用来了解发生错误的环境信息。
+注意，Node 有计划在未来废除unhandledRejection事件。如果 Promise 内部有未捕获的错误，会直接终止进程，并且进程的退出码不为 0。
+
+
+<script>
+    Promise
+        .resolve()
+        .catch(function (error) {
+            console.log('oh no', error);
+        })
+        .then(function () {
+            console.log('carry on');
+        });
+    // carry on
+    // 上面的代码因为没有报错，跳过了catch()方法，直接执行后面的then()方法。此时，要是then()方法里面报错，就与前面的catch()无关了。
+</script>
+
+
+一般总是建议，Promise 对象后面要跟catch()方法，这样可以处理 Promise 内部发生的错误。catch ()方法返回的还是一个 Promise 对象，
+因此后面还可以接着调用then()方法。 catch()再出现错误不会走then了
+
+<script>
+
+    const someAsyncThing = function () {
+        return new Promise(function (resolve, reject) {
+            // 下面一行会报错，因为x没有声明
+            resolve(x + 2);
+        });
+    };
+
+    someAsyncThing()
+        .catch(function (error) {
+            console.log('oh no', error);
+        })
+        .then(function () {
+            console.log('carry on');
+        });
+        // oh no [ReferenceError: x is not defined]
+        // carry on
+        // 上面代码运行完catch()方法指定的回调函数，会接着运行后面那个then()方法指定的回调函数。如果没有报错，则会跳过catch()方法。
+</script>
+<script>
+
+    const someAsyncThing = function () {
+        return new Promise(function (resolve, reject) {
+            // 下面一行会报错，因为x没有声明
+            resolve(x + 2);
+        });
+    };
+
+    someAsyncThing().then(function () {
+        return someOtherAsyncThing();
+    }).catch(function (error) {
+        console.log('oh no', error);
+        // 下面一行会报错，因为 y 没有声明
+        y + 2;
+    }).then(function () {
+        console.log('carry on');
+    });
+    // oh no [ReferenceError: x is not defined]
+
+
+    someAsyncThing().then(function () {
+        return someOtherAsyncThing();
+    }).catch(function (error) {
+        console.log('oh no', error);
+        // 下面一行会报错，因为y没有声明
+        y + 2;
+    }).catch(function (error) {
+        console.log('carry on', error);
+    });
+    // oh no [ReferenceError: x is not defined]
+    // carry on [ReferenceError: y is not defined]
+    // 上面代码中，第二个catch()方法用来捕获前一个catch()方法抛出的错误。
+</script>

@@ -1,0 +1,48 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-10-19 16:16:36
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-10-19 16:33:29
+ * @FilePath            : \new\6 Es6\15 Module （模块）的语法\4 ES6模块\4 import.html
+-->
+1 注意，import命令具有提升效果，会提升到整个模块的头部，首先执行。
+
+<script type='module'>
+    foo();
+    import { foo } from 'my_module'; 
+    // 上面的代码不会报错，因为import的执行早于foo的调用。这种行为的本质是，import命令是编译阶段执行的，在代码运行之前
+</script>
+2 由于import是静态执行，所以不能使用表达式和变量，这些只有在运行时才能得到结果的语法结构。
+<script>
+    // 因为它们用到了表达式、变量和if结构。在静态分析阶段，这些语法都是没法得到值的。
+    // 报错
+    import { 'f' + 'oo' } from 'my_module';
+
+    // 报错
+    let module = 'my_module';
+    import { foo } from module;
+
+    // 报错
+    if (x === 1) {
+        import { foo } from 'module1';
+    } else {
+        import { foo } from 'module2';
+    }
+</script>
+3 最后，import语句会执行所加载的模块，因此可以有下面的写法。
+
+<script>
+    import 'lodash';
+    // 上面代码仅仅执行lodash模块，但是不输入任何值。
+
+    // 如果多次重复执行同一句import语句，那么只会执行一次，而不会执行多次。
+    import 'lodash';
+    import 'lodash';
+    // 上面代码加载了两次lodash，但是只会执行一次。
+    // ----------------------------------------------------------------
+    import { foo } from 'my_module';
+    import { bar } from 'my_module';
+
+    // 等同于
+    import { foo, bar } from 'my_module';
+</script>

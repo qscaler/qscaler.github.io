@@ -1,0 +1,35 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-09-29 14:18:38
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-09-29 14:20:43
+ * @FilePath            : \new\7 vue\16 Vue之webpack打包基础---模块化思维\1\1.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="aaa.js"></script>
+    <script src="bbb.js"></script>
+</head>
+<div>https://www.cnblogs.com/ITPower/p/14466964.html</div>
+<div>
+    现实工作中, 一个项目可能会有多个人同时开发. 然后, 将所有人开发的内容, 合并到一个文件中. 比如:
+    <br>
+    1. 有3三个人同时开发, 一个人一个js文件, 最后引入到main.js
+    <br>
+    2. 每个人单独写, 这样, 定义的变量可能会重名, 那么在main.js中取值赋值就可能会出现问题
+    <br>
+    如何解决这个问题呢? 我们使用了闭包的写法. 然后给闭包设置一个返回值. 这样相互之间就彼此隔离开了. 来看下面的一个案例.
+    <br>
+    之所以能够让两个js脚本相互隔离, 是闭包的在起作用. 闭包就是一个简单地模块化思维的雏形. 他将每个人开发的东西进行了模块化封装.
+</div>
+<script>
+    console.log(module1.flag)   //true
+    console.log(module2.flag)   //false
+</script>
+</body>
+
+</html>

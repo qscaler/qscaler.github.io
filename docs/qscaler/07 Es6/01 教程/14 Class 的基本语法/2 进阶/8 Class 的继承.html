@@ -1,0 +1,29 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-29 09:19:51
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-06-22 11:42:50
+ * @FilePath            : \new\6 Es6\14 Class 的基本语法\8 Class 的继承.html
+-->
+
+
+<script>
+    // 链接：https://www.jianshu.com/p/fc79756b1dc0
+    // 其中 constructor 方法是类的构造函数，是一个默认方法，通过 new 命令创建对象实例时，自动调用该方法。
+    // 一个类必须有 constructor 方法，如果没有显式定义，一个默认的 consructor 方法会被默认添加。所以即使你没有添加构造函数，
+    // 也是会有一个默认的构造函数的。一般 constructor 方法返回实例对象 this ，但是也可以指定 constructor 方法返回一个全新的对象，
+    // 让返回的实例对象不是该类的实例。
+
+    // 1. 当做函数使用
+        class A { }
+        class B extends A {
+            constructor() {
+                super();  // ES6 要求，子类的构造函数必须执行一次 super 函数，否则会报错。
+            }
+        }
+        // 注：在 constructor 中必须调用 super 方法，因为子类没有自己的 this 对象，而是继承父类的 this 对象，
+        // 然后对其进行加工, 而 super 就代表了父类的构造函数。super 虽然代表了父类 A 的构造函数，但是返回的是子类 B 的实例，
+        // 即 super 内部的 this 指的是 B，因此 super() 在这里相当于```A.prototype.constructor.call(this, props)``。
+
+
+</script>

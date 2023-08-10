@@ -1,0 +1,17 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[remote "github"]
+	url = https://github.com/qscaler/qscaler.github.io.git
+	fetch = +refs/heads/*:refs/remotes/github/*
+[remote "origin"]
+	url = https://gitee.com/new-practice/blog.git
+	fetch = +refs/heads/*:refs/remotes/origin/*

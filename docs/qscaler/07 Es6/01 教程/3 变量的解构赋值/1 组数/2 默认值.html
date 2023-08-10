@@ -1,0 +1,32 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-10-05 08:41:13
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-10-05 08:45:58
+ * @FilePath            : \new\6 Es6\3 变量的解构赋值\1.1 组数的解构赋值 默认值.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 解构赋值允许指定默认值。
+
+        let [foo = true] = [];
+        foo // true
+
+        let [x, y = 'b'] = ['a']; // x='a', y='b'
+        let [x, y = 'b'] = ['a', undefined]; // x='a', y='b'
+
+        
+    </script>
+</body>
+
+</html>

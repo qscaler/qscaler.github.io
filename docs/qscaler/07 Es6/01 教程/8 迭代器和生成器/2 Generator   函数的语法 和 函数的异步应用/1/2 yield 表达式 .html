@@ -1,0 +1,122 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-25 15:42:33
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-25 16:43:19
+ * @FilePath            : \new\6 Es6\12 Generator 函数的语法\2 yield 表达式 .html
+-->
+由于 Generator 函数返回的遍历器对象，只有调用next方法才会遍历下一个内部状态，
+所以其实提供了一种可以暂停执行的函数。yield表达式就是暂停标志
+
+（1）遇到yield表达式，就暂停执行后面的操作，并将紧跟在yield后面的那个表达式的值，作为返回的对象的value属性值。
+
+（2）下一次调用next方法时，再继续往下执行，直到遇到下一个yield表达式。
+
+（3）如果没有再遇到新的yield表达式，就一直运行到函数结束，直到return语句为止，并将return语句后面的表达式的值，作为返回的对象的value属性值。
+
+（4）如果该函数没有return语句，则返回的对象的value属性值为undefined。
+
+需要注意的是，yield表达式后面的表达式，只有当调用next方法、内部指针指向该语句时才会执行，
+因此等于为 JavaScript 提供了手动的“惰性求值”（Lazy Evaluation）的语法功能。
+
+<script>
+    function* gen() {
+        console.log('1');
+    }
+    const delay = gen();
+    setTimeout(() => {
+        delay.next()
+    }, 3000)
+</script>
+由于 Generator 函数返回的遍历器对象，只有调用next方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。
+yield表达式就是暂停标志。Generator函数可以不用yield表达式，这时就变成了一个单纯的暂缓执行函数。yield表达式只能在generator函数中使用。
+
+
+-------------------------yield*表达式-------------------------------
+<script>
+    function* foo() {
+        yield 'a';
+        yield 'b';
+    }
+
+    function* bar() {
+        yield 'x';
+        // 手动遍历 foo()
+        yield* foo();
+        yield 'y';
+    }
+
+    for (let v of bar()) {
+        console.log(v);
+    }
+    //x
+    //a
+    //b
+    //y
+</script>
+<script>
+    function* foo() {
+        yield 'a';
+        yield 'b';
+    }
+
+    function* bar() {
+        yield 'x';
+        // 手动遍历 foo()
+        for (let i of foo()) {
+            console.log(i);
+        }
+        yield 'y';
+    }
+
+    for (let v of bar()) {
+        console.log(v);
+    }
+    // x
+    // a
+    // b
+    // y
+</script>
+<script>
+    function* bar() {
+        yield 'x';
+        yield* foo();
+        yield 'y';
+    }
+
+    // 等同于
+    function* bar() {
+        yield 'x';
+        yield 'a';
+        yield 'b';
+        yield 'y';
+    }
+
+    // 等同于
+    function* bar() {
+        yield 'x';
+        for (let v of foo()) {
+            yield v;
+        }
+        yield 'y';
+    }
+
+    for (let v of bar()) {
+        console.log(v);
+    }
+</script>
+
+<script>
+    let obj = {
+        * myGeneratorMethod() {
+            // ···
+        }
+    };
+
+    // 等同
+    let obj = {
+        myGeneratorMethod: function* () {
+            // ···
+        }
+    };
+</script>

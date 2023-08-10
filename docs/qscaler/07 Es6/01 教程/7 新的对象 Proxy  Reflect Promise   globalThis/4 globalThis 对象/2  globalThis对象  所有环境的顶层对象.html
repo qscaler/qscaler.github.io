@@ -1,0 +1,76 @@
+<!--
+ * @Author              : qxp
+ * @Date                : 2021-03-22 14:43:40
+ * @LastEditors         : Please set LastEditors
+ * @LastEditTime        : 2021-03-22 14:44:23
+ * @FilePath            : \new\6 Es6\2 let const\2  globalThis对象.html
+-->
+globalThis 对象
+JavaScript 语言存在一个顶层对象，它提供全局环境（即全局作用域），所有代码都是在这个环境中运行。但是，顶层对象在各种实现里面是不统一的。
+
+浏览器里面，顶层对象是window，但 Node 和 Web Worker 没有window。
+浏览器和 Web Worker 里面，self也指向顶层对象，但是 Node 没有self。
+Node 里面，顶层对象是global，但其他环境都不支持。
+同一段代码为了能够在各种环境，都能取到顶层对象，现在一般是使用this变量，但是有局限性。
+
+全局环境中，this会返回顶层对象。但是，Node.js 模块中this返回的是当前模块，ES6 模块中this返回的是undefined。
+函数里面的this，如果函数不是作为对象的方法运行，而是单纯作为函数运行，this会指向顶层对象。
+但是，严格模式下，这时this会返回undefined。
+
+不管是严格模式，还是普通模式，new Function('return this')()，总是会返回全局对象。
+但是，如果浏览器用了 CSP（Content Security Policy，内容安全策略），那么eval、new
+Function这些方法都可能无法使用。
+
+综上所述，很难找到一种方法，可以在所有情况下，都取到顶层对象。下面是两种勉强可以使用的方法。
+
+<script>
+
+    // 方法一
+    (typeof window !== 'undefined'
+        ? window
+        : (typeof process === 'object' &&
+            typeof require === 'function' &&
+            typeof global === 'object')
+            ? global
+            : this);
+
+    // 方法二
+    var getGlobal = function () {
+        if (typeof self !== 'undefined') { return self; }
+        if (typeof window !== 'undefined') { return window; }
+        if (typeof global !== 'undefined') { return global; }
+        throw new Error('unable to locate global object');
+    };
+</script>
+ES2020 在语言标准的层面，引入globalThis作为顶层对象。也就是说，任何环境下，
+globalThis都是存在的，都可以从它拿到顶层对象，指向全局环境下的this。
+
+垫片库global-this模拟了这个提案，可以在所有环境拿到globalThis。
+
+
+
+global
+    Global对象
+    ECMAScript中的Global对象在某种意义上是作为一个终极的“兜底儿对象”来定义的。换句话说，不属于任何其他对象的属性和方法，最终都是它的属性和方法。
+
+    1 为何要对URI进行编码：
+        通常如果一样东西需要编码，说明这样东西并不适合传输。原因多种多样，如Size过大，包含隐私数据。
+        对于Url来说，之所 以要进行编码，是因为Url中有些字符会引起歧义。
+
+        如Url参数字符串中使用key=value键值对这样的形式来传参，键值对之间以&符号隔，如/s?q=abc&ie=utf-
+        8。如果你的value字符串中包含了=或者&，那么势必会造成接收Url的服务器解析错误，因此必须将引起歧义的&和=符号进行转义， 也就是对其进行编码。
+
+        又如，Url的编码格式采用的是ASCII码，而不是Unicode，这也就是说你不能在Url中包含任何非ASCII字符，
+        例如中文。否则如果客户端浏 览器和服务端浏览器支持的字符集不同的情况下，中文可能会造成问题。
+
+    2 URI编码
+        Global对象的encodeURI()和encodeURIComponent()方法
+        可以对URI (Uniform ResourceIdentifiers,通用资源标识符)进行编码，以便发送给浏览器。有效的URI中不能包含某些字符，
+        例如空格。而这URI编码方法就可以对URI进行编码，它们用特殊的UTF-8编码替换所有无效的字符，从而让浏览器能够接受和理解。
+    3 URI解码
+        与encodeURI()和encodeURIComponent()方法对应的两个方法分别是decodeURI()和decodeURIComponent()。
+        其中，decodeURI()只能对使用encodeURI()替换的字符进行解码。
+
+    4 escape()、encodeURI()、encodeURIComponent()区别详解
+        https://www.cnblogs.com/qiantuwuliang/archive/2009/07/19/1526687.html  
+        

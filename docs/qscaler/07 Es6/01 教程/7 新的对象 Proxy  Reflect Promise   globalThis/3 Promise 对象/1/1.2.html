@@ -1,0 +1,31 @@
+<!--
+ * @Project:
+ * @FileName:
+ * @Remark:
+ * @Author: qxp
+ * @Date: 2020-09-07 00:27:25
+ * @LastEditors: qxp
+ * @LastEditTime: 2020-09-07 00:41:02
+ * @FilePath: \vue\1 原理\1 study\2 进阶\promise\2.html
+-->
+<script>
+    debugger
+    const promise1 = new Promise((resolve, reject) => {
+            console.log('promise1')
+            resolve('resolve1')
+        })
+        const promise2 = promise1.then(res => {
+            console.log(res)
+        })
+        console.log('1', promise1);
+        console.log('2', promise2);
+        setTimeout(()=>{
+            console.log(promise2);
+        })
+
+        // promise1
+        // 1 Promise { <resolved>: "resolve1"}
+        // 2 Promise {<pending>}
+        // resolve1
+        // Promise {<resolved>: undefined}
+</script>
