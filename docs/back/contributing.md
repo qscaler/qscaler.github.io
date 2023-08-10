@@ -37,13 +37,13 @@ index 优先级高
     <br/>
     <!-- 相对路径 -->
 
-    [首页](../README.md)  
-    [配置参考](../reference/config.md)  
-    [快速上手](./getting-started.md)
+    <!-- [首页](../README.md)   -->
+    <!-- [配置参考](../reference/config.md)   -->
+    <!-- [快速上手](./getting-started.md) -->
     <!-- 绝对路径 -->
 
-    [指南](/zh/guide/README.md)  
-    [配置参考 > markdown.links](/zh/reference/config.md#links)
+    <!-- [指南](/zh/guide/README.md)   -->
+    <!-- [配置参考 > markdown.links](/zh/reference/config.md#links) -->
     <!-- URL -->
 
     [GitHub](https://github.com)
@@ -118,10 +118,10 @@ index 优先级高
     相对路径
     你可以在你的 Markdown 内容中使用相对路径来引用静态资源：
 
-    ![图片](./image.png)
+    <!-- ![图片](./image.png) -->
     或
 
-    ![图片](image.png)
+    <!-- ![图片](image.png) -->
     一般情况下，我们推荐你使用这种方式来引用图片，因为人们通常会把图片放在引用它的 Markdown 文件附近
 
 3.  Public
@@ -129,7 +129,7 @@ index 优先级高
     默认的 Public 目录是 .vuepress/public ，可以通过 public 配置项来修改。
     <!-- 你不需要给 `/images/hero.png` 手动添加 `/bar/` 前缀 -->
 
-    ![VuePress Logo](/images/favicon.ico)
+    <!-- ![VuePress Logo](/images/favicon.ico) -->
 
 4.  依赖包和路径别名
     尽管这不是常见用法，但是你可以从依赖包中引用图片：
