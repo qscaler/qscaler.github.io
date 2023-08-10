@@ -1,0 +1,1 @@
+const t=JSON.parse('{"key":"v-0058e6e3","path":"/qscaler/01%20html/1%20%E5%9F%BA%E7%A1%80%E7%AF%87.html","title":"1 基础篇","lang":"zh-CN","frontmatter":{"title":"1 基础篇"},"headers":[],"git":{"updatedTime":1691639900000,"contributors":[{"name":"qscaler","email":"840522578@qq.com","commits":1}]},"filePathRelative":"qscaler/01 html/1 基础篇.md"}');export{t as data};
