@@ -1,1 +1,0 @@
-### 3 Promise.prototype.then()
